@@ -207,10 +207,10 @@ public class FriendList extends JFrame implements ActionListener, MouseListener,
     /**
      * 更新好友列表
      */
-    public void updateFriendList(String friendLstContent) {
+    public void updateFriendList(String friendId,boolean come) {
         for (int i = 0; i < friendLbs.length; i++) {
-            if (friendLbs[i].getId().equals(friendLstContent))
-                friendLbs[i].setEnabled(true);
+            if (friendLbs[i].getId().equals(friendId.trim()))
+                friendLbs[i].setEnabled(come);
         }
     }
 

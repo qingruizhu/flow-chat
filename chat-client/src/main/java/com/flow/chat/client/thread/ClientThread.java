@@ -38,11 +38,12 @@ public class ClientThread extends Thread {
                     chat.showMessage(message);
                 } else if (message.getMesType().equals(MessageType.message_ret_onLineFriend)) {
                     /** 好友列表 */
-                    String content = message.getCon();
-                    System.out.println("好友上线通知：" + content);
+                    String comeId = message.getSender();
+                    System.out.println("好友上线通知：" + comeId);
                     FriendList friendList = ManagerFriendList.get(message.getGetter());
-                    friendList.updateFriendList(content.trim());
-
+                    if (null != friendList) {
+                        friendList.updateFriendList(comeId,true);
+                    }
                 } else if (message.getMesType().equals(MessageType.message_sendfile)) {
                     /** 接收文件 */
                     if (receiveFrame == null) {
@@ -56,14 +57,21 @@ public class ClientThread extends Thread {
 //                        receiveFrame.setVisible(false);
 //                        receiveFrame = null;
 //                    }
-                } else if (message.getMesType().equals(MessageType.message_login_out)) {
+                } else if (message.getMesType().equals(MessageType.message_friend_login_out)) {
+                    /** 好友下线通知 */
+                    String outId = message.getSender();
+                    System.out.println("好友下线通知：" + outId);
+                    FriendList friendList = ManagerFriendList.get(message.getGetter());
+                    if (null != friendList) {
+                        friendList.updateFriendList(outId,false);
+                    }
+                }else if (message.getMesType().equals(MessageType.message_login_out)) {
                     /** 成功退出 */
                     //终止线程
                     this.interrupt();
                     if (this.isInterrupted()) {
                         System.exit(0);
                     }
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();

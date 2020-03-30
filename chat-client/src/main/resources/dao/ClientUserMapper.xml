@@ -3,7 +3,7 @@
 <mapper namespace="com.flow.chat.client.dao.ClientUserMapper">
 
 
-    <resultMap id="BaseResultMap" type="com.flow.chat.bgd.model.User">
+    <resultMap id="UserResultMap" type="com.flow.chat.bgd.model.User">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="user_id" jdbcType="VARCHAR" property="userId"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -12,7 +12,7 @@
     </resultMap>
 
 
-    <select id="selectFriendsByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="selectFriendsByUserId" parameterType="java.lang.String" resultMap="UserResultMap">
         select u.*,l.online from user u LEFT JOIN on_line l on u.user_id=l.user_id
             where u.user_id in (
 	                select friend_id from user_friend where user_id =#{userId,jdbcType=VARCHAR})

@@ -2,11 +2,11 @@ package com.flow.chat.server.model;
 
 import com.flow.chat.bgd.model.ChatContent;
 import com.flow.chat.bgd.model.OnLine;
-import com.flow.chat.bgd.service.IOnlineService;
+import com.flow.chat.bgd.model.User;
 import com.flow.chat.common.DateformateUtil;
 import com.flow.chat.common.Message;
 import com.flow.chat.common.MessageType;
-import com.flow.chat.server.service.ServerChatContentService;
+import com.flow.chat.server.component.TableService;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -19,11 +19,11 @@ import java.util.List;
  */
 public class ServerConClientThread extends Thread {
     private Socket socket;
-    private IOnlineService onlineService;
-    private ServerChatContentService chatContentService;
+    private TableService service;
 
-    public ServerConClientThread(Socket socket) {
+    public ServerConClientThread(Socket socket, TableService service) {
         this.socket = socket; //把socket给该线程
+        this.service = service;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class ServerConClientThread extends Thread {
                     chatContent.setGetter(message.getGetter());
                     chatContent.setSendTime(DateformateUtil.yMd(new Date()));
                     chatContent.setContent(message.getCon());
-                    chatContentService.insert(chatContent);
+                    service.insert(chatContent);
                     //转发
                     ServerConClientThread getterThread = ManagerClientThread.get(message.getGetter());
                     if (null != getterThread) {
@@ -51,7 +51,7 @@ public class ServerConClientThread extends Thread {
                     }
                 } else if (message.getMesType().equals(MessageType.message_ret_outlineMessage)) {
                     /** 2.获取离线信息*/
-                    List<ChatContent> chatContents = chatContentService.selectOutlineChatContent(message.getGetter(), message.getSender());
+                    List<ChatContent> chatContents = service.selectOutlineChatContent(message.getGetter(), message.getSender());
                     if (null != chatContents && chatContents.size() > 0) {
                         for (ChatContent content : chatContents) {
                             ObjectOutputStream oos = new ObjectOutputStream(this.socket.getOutputStream());
@@ -70,7 +70,22 @@ public class ServerConClientThread extends Thread {
                     onLine.setUserId(message.getSender());
                     onLine.setOnline(false);
                     onLine.setLogoutTime(DateformateUtil.yMd(new Date()));
-                    onlineService.update(onLine);
+                    service.update(onLine);
+                    //通知其好友自己已下线
+                    List<User> users = service.selectOnlineFriends(message.getSender());
+                    if (null != users && users.size() > 0) {
+                        Message ms = new Message();
+                        ms.setSender(message.getSender());
+                        ms.setMesType(MessageType.message_friend_login_out);
+                        for (User friend : users) {
+                            ServerConClientThread friendThread = ManagerClientThread.get(friend.getUserId());
+                            if (null != friendThread && null != friendThread.getSocket()) {
+                                ms.setGetter(friend.getUserId());
+                                ObjectOutputStream outputStream = new ObjectOutputStream(friendThread.getSocket().getOutputStream());
+                                outputStream.writeObject(ms);
+                            }
+                        }
+                    }
                     //终止线程
                     ObjectOutputStream oos = new ObjectOutputStream(this.socket.getOutputStream());
                     oos.writeObject(message);
@@ -98,11 +113,4 @@ public class ServerConClientThread extends Thread {
         return socket;
     }
 
-    public void setChatContentService(ServerChatContentService chatContentService) {
-        this.chatContentService = chatContentService;
-    }
-
-    public void setOnlineService(IOnlineService onlineService) {
-        this.onlineService = onlineService;
-    }
 }
