@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.flow.chat</groupId>
+        <artifactId>flow-chat</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <!--        <relativePath/>-->
+    </parent>
+    <groupId>com.flow.chat</groupId>
+    <artifactId>chat-server</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>chat-server</name>
+    <packaging>jar</packaging>
+    <description>服务端</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.flow.chat</groupId>
+            <artifactId>chat-bgd</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+
+    <build>
+        <plugins>
+            <!--spring boot 打包规则 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!--跳过test begin-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!--跳过test end-->
+        </plugins>
+    </build>
+</project>

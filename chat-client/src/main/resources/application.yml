@@ -1,0 +1,26 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: FlowClient
+#  jackson:
+#    date-format: yyyy-MM-dd HH:mm:ss
+#    time-zone: GMT+8
+
+#server:
+#  port: 555
+#  servlet:
+#    context-path: ""
+
+
+mybatis:
+  mapper-locations:
+    - classpath:dao/*.xml
+    - classpath*:com/**/mapper/*.xml # ** 表示可多级目录
+
+logging:
+  level:
+    root: info #日志配置DEBUG,INFO,WARN,ERROR
+    com.flow.client: debug
+#  file: demo_log.log #配置日志文件名称
+#  path: /var/logs #配置日志生成路径

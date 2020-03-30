@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flow.chat.server.dao.ServerChatContentMapper">
+
+
+    <resultMap id="ChatResultMap" type="com.flow.chat.bgd.model.ChatContent">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="sender" jdbcType="VARCHAR" property="sender"/>
+        <result column="getter" jdbcType="VARCHAR" property="getter"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="send_time" jdbcType="VARCHAR" property="sendTime"/>
+    </resultMap>
+
+    <select id="selectOutlineChatContent" parameterType="java.lang.String" resultMap="ChatResultMap">
+        select * from chat_content
+            where send_time>(
+                select logout_time from on_line
+                    where user_id =#{userId,jdbcType=VARCHAR})
+            and sender =#{sender,jdbcType=VARCHAR}
+            and getter =#{userId,jdbcType=VARCHAR}
+    </select>
+
+</mapper>
