@@ -2,14 +2,12 @@ package com.flow.chat.client;
 
 import com.flow.chat.client.controller.Login;
 import com.flow.chat.client.util.SpringContextUtils;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
 import java.awt.*;
 
 @SpringBootApplication(scanBasePackages = "com.flow.chat")
-@MapperScan(basePackages = "com.flow.chat.bgd.mapper,com.flow.chat.client.dao")
 public class ChatClientApplication {
 
 //    public static void main(String[] args) {

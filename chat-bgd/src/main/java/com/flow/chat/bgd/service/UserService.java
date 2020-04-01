@@ -9,7 +9,6 @@ import org.springframework.util.CollectionUtils;
 import javax.annotation.Resource;
 import java.util.List;
 
-@Service
 public class UserService implements IUserService {
 
     @Resource

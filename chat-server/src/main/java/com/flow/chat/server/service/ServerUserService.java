@@ -20,6 +20,12 @@ public class ServerUserService extends UserService {
     private ServerUserMapper serverUserMapper;
 
     /**
+     * 查询好友列表
+     */
+    public List<User> selectFriendsByUserId(String userId) {
+        return serverUserMapper.selectFriendsByUserId(userId);
+    }
+    /**
      * 查询在线好友列表
      */
     public List<User> selectOnlineFriendsByUserId(String userId) {

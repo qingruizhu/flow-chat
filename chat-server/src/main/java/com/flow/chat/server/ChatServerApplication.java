@@ -1,6 +1,7 @@
 package com.flow.chat.server;
 
 import com.flow.chat.server.controller.Server;
+import com.flow.chat.server.controller.ServerFrame;
 import com.flow.chat.server.util.SpringContextUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,8 +19,8 @@ public class ChatServerApplication {
             public void run() {
                 try {
                     //获取ServerFrame界面实例并显示
-//                        SpringContextUtils.getBean(ServerFrame.class).setVisible(true);
-                    SpringContextUtils.getBean(Server.class).listening();//开启服务器监听
+                    SpringContextUtils.getBean(ServerFrame.class).setVisible(true);
+//                    SpringContextUtils.getBean(Server.class).listening();//开启服务器监听
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

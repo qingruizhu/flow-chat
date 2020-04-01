@@ -24,6 +24,26 @@
             <groupId>com.flow.chat</groupId>
             <artifactId>chat-bgd</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <!--数据源管理-->
+                    <groupId>mysql</groupId>
+                    <artifactId>mysql-connector-java</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.mybatis.spring.boot</groupId>
+                    <artifactId>mybatis-spring-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>druid-spring-boot-starter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <!-- mybatis 生成器-->
+                    <groupId>org.mybatis.generator</groupId>
+                    <artifactId>mybatis-generator-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
